@@ -9,8 +9,39 @@ from sklearn.linear_model import Lasso, Ridge
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
 
+def plot_polynomial_regression(X, Y, degree, model):
+
+    X = np.array(X).reshape(-1, 1)
+    Y = np.array(Y)
+
+    # Generate predicted values for plotting the curve
+    X_plot = np.linspace(np.min(X), np.max(X), 100).reshape(-1, 1)
+    poly = PolynomialFeatures(degree=degree)
+    X_poly = poly.fit_transform(X)
+    X_plot_poly = poly.transform(X_plot)
+    Y_plot_poly = model.predict(X_plot_poly)
+
+    # Plot the original points
+    plt.scatter(X, Y, color='blue', label='Original Data')
+
+    # Plot the polynomial regression curve
+    plt.plot(X_plot, Y_plot_poly, color='red', label=f'Polynomial Regression (degree {degree})')
+
+    plt.xlabel('X')
+    plt.ylabel('Y')
+    plt.title(f'Polynomial Regression (Degree {degree})')
+    plt.legend()
+    plt.grid(True)
+
+    # Set plot bounds based on X and Y
+    plt.xlim(np.min(X), np.max(X))
+    plt.ylim(np.min(Y), np.max(Y))
+
+    plt.show()
+
+"""
 def train_and_plot_polynomial_regression(X, Y, degree):
-    """
+
     Trains a polynomial regression model, returns weights, and plots results.
 
     Args:
@@ -22,7 +53,7 @@ def train_and_plot_polynomial_regression(X, Y, degree):
       A tuple containing:
         - The weights (coefficients) of the trained model (numpy array).
         - The intercept of the trained model (float).
-    """
+
     X = np.array(X).reshape(-1, 1)
     Y = np.array(Y)
 
@@ -56,6 +87,7 @@ def train_and_plot_polynomial_regression(X, Y, degree):
     plt.show()
 
     return model.coef_, model.intercept_
+"""
 
 def predict_and_evaluate(model_coefficients, degree, X_train, Y_train, X_test, Y_test):
     """
